@@ -3,6 +3,10 @@ package com.example.formulariobasicoalumno_spring.controlador;
 import com.example.formulariobasicoalumno_spring.modelo.Alumno;
 import com.example.formulariobasicoalumno_spring.servicio.AlumnoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +27,15 @@ public class AlumnoControlador {
      * @return index.html
      */
     @GetMapping("/")
-    public String mostrarListadoAlumnos(Model model){
+    public String mostrarListadoAlumnos(Model model,
+                                        @PageableDefault(size = 5)
+                                        @SortDefault("idAlumno") Pageable pageable){
+        //Añadir objeto pageable al template
+        Page alumnoPage = this.alumnoServicio.mostrarAlumnos(pageable);
         //alamcenar lista de alumnos
-        List<Alumno> alumnos = this.alumnoServicio.mostrarAlumnos();
+
         //agregar a la vista el listado de alumnos
-        model.addAttribute("alumnos", alumnos);
+        model.addAttribute("alumnos", alumnoPage);
 
         return "index";
     }
@@ -56,6 +64,7 @@ public class AlumnoControlador {
     @GetMapping("/eliminar/{id}")
     public String eliminarAlumno(@PathVariable("id") int idAlumno){
         //eliminar alumno
+        System.out.println("alumno seleccionado a eliminar: " + idAlumno);
         this.alumnoServicio.eliminarAlumnoPorID(idAlumno);
 
         return "redirect:/alumnos/";
@@ -64,6 +73,8 @@ public class AlumnoControlador {
     @GetMapping("/editar/{id}")
     public String editarAlumno(@PathVariable("id") int idAlumno,
                                 Model model){
+        System.out.println("alumno seleccionado a editar: " + idAlumno);
+
         //buscar el alumno a actualizar
         Alumno alumnoEncontrado = this.alumnoServicio.buscarAlumnoPorID(idAlumno);
         //añadir el alumno encontrado a la vista

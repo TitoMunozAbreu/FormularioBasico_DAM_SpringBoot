@@ -32,9 +32,9 @@
               <!-- msg actualizado -->
               <div
                 th:if="${actualizado != null}"
-                class="alert alert-success alert-dismissible fade show"
+                class="alert alert-info alert-dismissible fade show"
                 role="alert">
-                <i class="bi bi-check-circle-fill"><strong th:text="${actualizado}"/></i>
+                <i class="bi bi-info-circle-fill"><strong th:text="${actualizado}"/></i>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
 
@@ -52,45 +52,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="alumno: ${alumnos}">
+                <tr th:each="alumno, status : ${alumnos}">
                   <td scope="row" th:text="${alumno.getIdAlumno()}"></td>
                   <td th:text="${alumno.getNombre()}"></td>
                   <td th:text="${alumno.getApellido()}"></td>
                   <td th:text="${alumno.getEdad()}"></td>
                   <td th:text="${alumno.getDni()}"></td>
                   <!-- editar -->
-                  <td><a th:href="@{/alumnos/editar/{id}(id=${alumno.getIdAlumno()})}"><i class="bi bi-pencil-square"></i></a></td>
+                  <td><a class="btn btn-outline-primary" th:href="@{/alumnos/editar/{id} (id=${alumno.getIdAlumno()})}" ><i class="bi bi-pencil-square"></i></a></td>
                   <!-- eliminar -->
-                  <!-- Button trigger modal -->
-                  <td>
-                  <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="bi bi-trash"></i>
-                  </a>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar alumno</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <p th:text="${alumno.getNombre()}"> ¿Esta seguro de eliminar el alumno?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                          <a th:href="@{/alumnos/eliminar/{id}(id=${alumno.getIdAlumno()})}" type="button" class="btn btn-danger">Eliminar</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </td>
-
-                 <!-- <td><a th:href="@{/alumnos/eliminar/{id}(id=${alumno.getIdAlumno()})}"><i class="bi bi-trash"></i></a></td>-->
+                  <td><a class="btn btn-outline-danger" th:href="@{/alumnos/eliminar/{id} (id=${alumno.getIdAlumno()})}" ><i class="bi bi-trash"></i></a></td>
                 </tr>
                 </tbody>
               </table>
+              <!--Paginacion-->
+              <div class="row">
+                <div class="col-sm-6">
+                  <div sd:pagination-summary="">info</div>
+                </div>
+                <div class="col-sm-6">
+                  <nav class="pull-right">
+                    <ul class="pagination" sd:pagination-split="7" sd:pagination="full">
+                      <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                      <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                      <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
             </div>
           </div>
         </div>

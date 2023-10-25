@@ -2,7 +2,10 @@ package com.example.formulariobasicoalumno_spring.servicio;
 
 import com.example.formulariobasicoalumno_spring.modelo.Alumno;
 import com.example.formulariobasicoalumno_spring.respositorio.AlumnoRepositorio;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,32 +17,23 @@ public class AlumnoServicio {
     private AlumnoRepositorio alumnoRepositorio;
 
 
-    public List<Alumno> mostrarAlumnos() {
-        return this.alumnoRepositorio.findAll();
+    public Page<Alumno> mostrarAlumnos(Pageable pageable) {
+        return  this.alumnoRepositorio.findAll(pageable);
     }
 
     public void crearAlumno(Alumno nuevoAlumno) {
         this.alumnoRepositorio.save(nuevoAlumno);
     }
 
+    @Transactional
     public void actualizarAlumnoPorID(int idAlumno, Alumno alumnoActualizado) {
-        Alumno alumnoEncontrado = this.alumnoRepositorio.findById(idAlumno)
-                .orElseThrow(() -> new IllegalArgumentException("Id invalido de alumno: " + idAlumno));
 
-        //actualizar datos del alumno
-        alumnoEncontrado.setNombre(alumnoActualizado.getNombre());
-        alumnoEncontrado.setApellido(alumnoActualizado.getApellido());
-        alumnoEncontrado.setEdad(alumnoActualizado.getEdad());
-        alumnoEncontrado.setDni(alumnoEncontrado.getDni());
-
-        //guardar cambios en la BBDD
-        this.alumnoRepositorio.save(alumnoEncontrado);
-/*        this.alumnoRepositorio.actualizarAlumnoPorID(
+        this.alumnoRepositorio.actualizarAlumnoPorID(
                 alumnoActualizado.getNombre(),
                 alumnoActualizado.getApellido(),
                 alumnoActualizado.getEdad(),
                 alumnoActualizado.getDni(),
-                idAlumno);*/
+                idAlumno);
 
     }
 
@@ -48,7 +42,8 @@ public class AlumnoServicio {
                 .orElseThrow(() -> new IllegalArgumentException("Id invalido de alumno: " + idAlumno ));
     }
 
+    @Transactional
     public void eliminarAlumnoPorID(int idAlumno) {
-        this.alumnoRepositorio.deleteById(idAlumno);
+        this.alumnoRepositorio.eliminarAlumnoPorID(idAlumno);
     }
 }
