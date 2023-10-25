@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+  <head>
+      <meta charset="UTF-8">
+      <title>Aplicacion Web Alumno</title>
+    <!-- Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  </head>
+
+  <body>
+    <section>
+      <div class="container-fluid">
+        <h1 class="text-center p-4">Clase 2º DAM</h1>
+        <div class="container-lg  p-4 " style="width: 60rem;">
+          <h3 class="text-center"> Listado de alumnos</h3>
+          <div class="container p-4" style="width: 40rem;">
+            <div class="row p-4">
+              <a type="button" class="btn btn-outline-success" th:href="@{crearAlumno}">Crear alumno</a>
+            </div>
+            <div class="row">
+              <!-- msg creado -->
+              <div
+                th:if="${creado != null}"
+                class="alert alert-success alert-dismissible fade show"
+                role="alert">
+                <i class="bi bi-check-circle-fill"><strong th:text="${creado}"/></i>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+
+              <!-- msg actualizado -->
+              <div
+                th:if="${actualizado != null}"
+                class="alert alert-success alert-dismissible fade show"
+                role="alert">
+                <i class="bi bi-check-circle-fill"><strong th:text="${actualizado}"/></i>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+
+             <!-- tabla -->
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Edad</th>
+                  <th scope="col">DNI</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="alumno: ${alumnos}">
+                  <td scope="row" th:text="${alumno.getIdAlumno()}"></td>
+                  <td th:text="${alumno.getNombre()}"></td>
+                  <td th:text="${alumno.getApellido()}"></td>
+                  <td th:text="${alumno.getEdad()}"></td>
+                  <td th:text="${alumno.getDni()}"></td>
+                  <!-- editar -->
+                  <td><a th:href="@{/alumnos/editar/{id}(id=${alumno.getIdAlumno()})}"><i class="bi bi-pencil-square"></i></a></td>
+                  <!-- eliminar -->
+                  <!-- Button trigger modal -->
+                  <td>
+                  <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-trash"></i>
+                  </a>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar alumno</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p th:text="${alumno.getNombre()}"> ¿Esta seguro de eliminar el alumno?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          <a th:href="@{/alumnos/eliminar/{id}(id=${alumno.getIdAlumno()})}" type="button" class="btn btn-danger">Eliminar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </td>
+
+                 <!-- <td><a th:href="@{/alumnos/eliminar/{id}(id=${alumno.getIdAlumno()})}"><i class="bi bi-trash"></i></a></td>-->
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  <!--JS bootstrap-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>

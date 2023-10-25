@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table
+@Table(name = "alumno")
 public class Alumno {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAlumno;
     private String nombre;
     private String apellido;

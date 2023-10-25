@@ -2,8 +2,11 @@ package com.example.formulariobasicoalumno_spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "com.example.formulariobasicoalumno_spring.respositorio")
 public class FormularioBasicoAlumnoSpringApplication {
 
     public static void main(String[] args) {
