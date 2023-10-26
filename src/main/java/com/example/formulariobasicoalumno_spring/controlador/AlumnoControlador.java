@@ -2,6 +2,7 @@ package com.example.formulariobasicoalumno_spring.controlador;
 
 import com.example.formulariobasicoalumno_spring.modelo.Alumno;
 import com.example.formulariobasicoalumno_spring.servicio.AlumnoServicio;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,10 +10,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/alumnos")
@@ -49,8 +49,13 @@ public class AlumnoControlador {
 
 
     @PostMapping("/crearAlumno")
-    public String creaAlumno(@ModelAttribute Alumno nuevoAlumno,
+    public String creaAlumno(@Valid @ModelAttribute("nuevoAlumno") Alumno nuevoAlumno,
+                             BindingResult result,
                              RedirectAttributes attributes){
+        //comprobar si existen errores en la validación
+        if(result.hasErrors()){
+            return "crear-alumno";
+        }
         //registrar alumno en la BBDD
         this.alumnoServicio.crearAlumno(nuevoAlumno);
         //mostrar que el alumno ha sido creado
@@ -85,8 +90,14 @@ public class AlumnoControlador {
 
     @PostMapping("/actualizar/{id}")
     public String actualizarAlumno(@PathVariable("id") int idAlumno,
-                                    @ModelAttribute Alumno alumnoActualizado,
+                                    @Valid @ModelAttribute("alumnoEncontrado") Alumno alumnoActualizado,
+                                   BindingResult result,
                                    RedirectAttributes redirectAttributes){
+        //comprobar si existen errores en la validación
+
+        if(result.hasErrors()){
+            return "actualizar-alumno";
+        }
         //actualizar alumno
         this.alumnoServicio.actualizarAlumnoPorID(idAlumno, alumnoActualizado);
         //mostrar que el alumno ha sido actualizado
