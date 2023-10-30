@@ -29,7 +29,7 @@ public class AlumnoControlador {
     @GetMapping("/")
     public String mostrarListadoAlumnos(Model model,
                                         @PageableDefault(size = 5)
-                                        @SortDefault("idAlumno") Pageable pageable){
+                                        Pageable pageable){
         //Añadir objeto pageable al template
         Page alumnoPage = this.alumnoServicio.mostrarAlumnos(pageable);
         //alamcenar lista de alumnos
